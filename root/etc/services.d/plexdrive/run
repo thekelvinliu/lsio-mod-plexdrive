@@ -1,0 +1,17 @@
+#!/usr/bin/execlineb -P
+
+# import environment variables
+with-contenv
+importas -D /plexdrive/cache.bolt -u PLEXDRIVE_CACHE_FILE PLEXDRIVE_CACHE_FILE
+importas -D /plexdrive -u PLEXDRIVE_CONFIG_DIR PLEXDRIVE_CONFIG_DIR
+importas -D /mnt/plexdrive -u PLEXDRIVE_MOUNT_DIR PLEXDRIVE_MOUNT_DIR
+importas -D ROOT -u PLEXDRIVE_ROOT_NODE_ID PLEXDRIVE_ROOT_NODE_ID
+
+# ensure PLEXDRIVE_CONFIG_DIR exists
+if { test -d ${PLEXDRIVE_CONFIG_DIR} }
+
+# run plexdrive to mount google drive at PLEXDRIVE_MOUNT_DIR
+ifthenelse
+{ test ${PLEXDRIVE_ROOT_NODE_ID} = ROOT }
+{ plexdrive mount -o allow_other,read_only -v 2 --cache-file ${PLEXDRIVE_CACHE_FILE} --config ${PLEXDRIVE_CONFIG_DIR} ${PLEXDRIVE_MOUNT_DIR} }
+{ plexdrive mount -o allow_other,read_only -v 2 --cache-file ${PLEXDRIVE_CACHE_FILE} --config ${PLEXDRIVE_CONFIG_DIR} --root-node-id ${PLEXDRIVE_ROOT_NODE_ID} ${PLEXDRIVE_MOUNT_DIR} }
