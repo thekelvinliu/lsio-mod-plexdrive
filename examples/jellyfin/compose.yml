@@ -1,0 +1,15 @@
+---
+services:
+  jelly:
+    image: lscr.io/linuxserver/jellyfin:latest
+    environment:
+      DOCKER_MODS: "thekelvinliu/lsio-mod-plexdrive:latest"
+      PGID: 1000
+      PUID: 1000
+    privileged: true
+    devices:
+      - /dev/fuse:/dev/fuse
+    ports:
+      - 8096:8096
+    volumes:
+      - ./plexdrive:/plexdrive
